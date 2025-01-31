@@ -9,7 +9,6 @@ public class Alert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
     private String location;
     private String description;
     private String severity;

@@ -1,66 +1,59 @@
 package com.service;
 
 import com.model.Alert;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
-public class AlertService {
-    
+@Transactional
+public class AlertServiceImpl {
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-    
+    private SessionFactory sessionFactory;
+
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
     public void save(Alert alert) {
-        if (alert.getId() == null) {
-            jdbcTemplate.update(
-                "INSERT INTO alerts (location, description, severity, reported_time, verified, status, latitude, longitude, reported_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                alert.getLocation(), alert.getDescription(), alert.getSeverity(), alert.getReportedTime(), alert.isVerified(),
-                alert.getStatus(), alert.getLatitude(), alert.getLongitude(), alert.getReportedBy()
-            );
-        } else {
-            jdbcTemplate.update(
-                "UPDATE alerts SET location=?, description=?, severity=?, reported_time=?, verified=?, status=?, latitude=?, longitude=?, reported_by=? WHERE id=?",
-                alert.getLocation(), alert.getDescription(), alert.getSeverity(), alert.getReportedTime(), alert.isVerified(),
-                alert.getStatus(), alert.getLatitude(), alert.getLongitude(), alert.getReportedBy(), alert.getId()
-            );
-        }
+        getSession().saveOrUpdate(alert);
     }
 
     public Alert findById(Long id) {
-        return jdbcTemplate.queryForObject(
-            "SELECT * FROM alerts WHERE id = ?",
-            new Object[]{id},
-            new AlertRowMapper()
-        );
+        return getSession().get(Alert.class, id);
     }
-    
+
     public List<Alert> findPendingAlerts() {
-        return jdbcTemplate.query(
-            "SELECT * FROM alerts WHERE verified = false AND status = 'PENDING'",
-            new AlertRowMapper()
-        );
+        return getSession()
+                .createQuery("FROM Alert WHERE verified = false AND status = 'PENDING'", Alert.class)
+                .getResultList();
     }
-    
+
     public List<Alert> findVerifiedAlerts() {
-        return jdbcTemplate.query(
-            "SELECT * FROM alerts WHERE verified = true AND status = 'VERIFIED'",
-            new AlertRowMapper()
-        );
+        return getSession()
+                .createQuery("FROM Alert WHERE verified = true AND status = 'VERIFIED'", Alert.class)
+                .getResultList();
     }
-    
+
     public void verifyAlert(Long id) {
-        jdbcTemplate.update(
-            "UPDATE alerts SET verified = true, status = 'VERIFIED' WHERE id = ?",
-            id
-        );
+        Alert alert = findById(id);
+        if (alert != null) {
+            alert.setVerified(true);
+            alert.setStatus("VERIFIED");
+            save(alert);
+        }
     }
-    
+
     public void resolveAlert(Long id) {
-        jdbcTemplate.update(
-            "UPDATE alerts SET status = 'RESOLVED' WHERE id = ?",
-            id
-        );
+        Alert alert = findById(id);
+        if (alert != null) {
+            alert.setStatus("RESOLVED");
+            save(alert);
+        }
     }
 }
