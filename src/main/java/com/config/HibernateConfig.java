@@ -13,14 +13,14 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.service", "com.controller", "com.model"})
+@ComponentScan(basePackages = {"com.service", "com.controller", "com.model", "com.config"})
 public class HibernateConfig {
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/your_database");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/ndms");
         dataSource.setUsername("root");
         dataSource.setPassword("");
         return dataSource;
@@ -36,15 +36,16 @@ public class HibernateConfig {
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         hibernateProperties.setProperty("hibernate.show_sql", "true");
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
+        hibernateProperties.setProperty("hibernate.current_session_context_class", "org.springframework.orm.hibernate5.SpringSessionContext");
 
         sessionFactory.setHibernateProperties(hibernateProperties);
         return sessionFactory;
     }
-
+    
     @Bean
     public HibernateTransactionManager transactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-        return transactionManager;
+        HibernateTransactionManager txManager = new HibernateTransactionManager();
+        txManager.setSessionFactory(sessionFactory().getObject());
+        return txManager;
     }
 }

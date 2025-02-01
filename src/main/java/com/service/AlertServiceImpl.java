@@ -28,18 +28,21 @@ public class AlertServiceImpl {
         return getSession().get(Alert.class, id);
     }
 
+    @Transactional(readOnly = true)
     public List<Alert> findPendingAlerts() {
         return getSession()
                 .createQuery("FROM Alert WHERE verified = false AND status = 'PENDING'", Alert.class)
                 .getResultList();
     }
 
+    @Transactional(readOnly = true)
     public List<Alert> findVerifiedAlerts() {
         return getSession()
                 .createQuery("FROM Alert WHERE verified = true AND status = 'VERIFIED'", Alert.class)
                 .getResultList();
     }
 
+    @Transactional
     public void verifyAlert(Long id) {
         Alert alert = findById(id);
         if (alert != null) {
@@ -49,6 +52,7 @@ public class AlertServiceImpl {
         }
     }
 
+    @Transactional
     public void resolveAlert(Long id) {
         Alert alert = findById(id);
         if (alert != null) {

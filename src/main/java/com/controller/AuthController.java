@@ -24,14 +24,12 @@ public class AuthController {
         return "redirect:/login?error";
     }
     
-    // Optional: Add a method to handle successful login
     @GetMapping("/login-success")
-    public String loginSuccess() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getAuthorities().stream()
+    public String loginSuccess(Authentication authentication) {
+        if (authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             return "redirect:/NDMS/views/admin/alerts/alerts-dashboard.jsp";
         }
-        return "redirect:/login?error";
+        return "redirect:/dashboard";  // Default redirect for non-admin users
     }
 }

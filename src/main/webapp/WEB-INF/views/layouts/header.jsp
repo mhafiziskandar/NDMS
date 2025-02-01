@@ -13,7 +13,10 @@
             <div class="dropdown-menu dropdown-menu-right">
                 <a href="#" class="dropdown-item">Profile</a>
                 <div class="dropdown-divider"></div>
-                <a href="logout" class="dropdown-item">Logout</a>
+                <a href="javascript:void(0)" class="dropdown-item" onclick="document.getElementById('logout-form').submit();">Logout</a>
+				<form id="logout-form" action="${pageContext.request.contextPath}/logout" method="post" style="display: none;">
+				    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				</form>
             </div>
         </li>
     </ul>

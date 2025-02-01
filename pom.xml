@@ -12,8 +12,8 @@
         <spring.version>5.3.30</spring.version>
         <spring.security.version>5.7.10</spring.security.version>
         <spring.data.version>2.7.17</spring.data.version>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -127,7 +127,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <release>21</release>
+                    <release>17</release>
                 </configuration>
             </plugin>
             <plugin>
