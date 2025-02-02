@@ -12,7 +12,6 @@ import com.repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
-
     @Autowired
     private UserRepository userRepository;
     
@@ -24,17 +23,20 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        System.out.println("Found user: " + username + ", role: " + user.getRole() + ", enabled: " + user.isEnabled());
-        System.out.println("Password matches: " + passwordEncoder.matches("yourTestPassword", user.getPassword()));
+        System.out.println("Found user: " + username + ", id: " + user.getId() + ", role: " + user.getRole());
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
+                .withUsername(username)
                 .password(user.getPassword())
                 .disabled(!user.isEnabled())
                 .roles(user.getRole().replace("ROLE_", ""))

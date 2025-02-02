@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
                     response.sendRedirect("/NDMS/admin/alerts");
                 } else {
-                    response.sendRedirect("/NDMS/dashboard");
+                    response.sendRedirect("/NDMS/user/disasters");
                 }
             })
             .permitAll()

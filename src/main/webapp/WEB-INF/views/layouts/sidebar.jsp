@@ -26,7 +26,7 @@
                 <!-- Disaster Reporting - Only for regular users -->
                 <sec:authorize access="hasRole('ROLE_USER')">
                     <li class="nav-item">
-                        <a href="${pageContext.request.contextPath}/disaster" class="nav-link">
+                        <a href="${pageContext.request.contextPath}/user/disasters" class="nav-link">
                             <i class="nav-icon fas fa-exclamation-triangle"></i>
                             <p>Disaster Reporting</p>
                         </a>

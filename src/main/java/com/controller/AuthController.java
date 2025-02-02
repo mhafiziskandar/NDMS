@@ -30,6 +30,6 @@ public class AuthController {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             return "redirect:/NDMS/views/admin/alerts/alerts-dashboard.jsp";
         }
-        return "redirect:/dashboard";  // Default redirect for non-admin users
+        return "redirect:/NDMS/views/user/disasters/submit-report.jsp";  // Default redirect for non-admin users
     }
 }
