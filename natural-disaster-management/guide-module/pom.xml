@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.example.naturaldisaster</groupId>
+        <artifactId>natural-disaster-management</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>guide-module</artifactId>
+    <packaging>war</packaging> <!-- Add this line to package as WAR -->
+
+    <dependencies>
+        <!-- If the guide module has specific dependencies, add them here -->
+        <!-- Add JUnit 5 for testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Spring Web (for MVC support) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.3.21</version> <!-- Use the version compatible with your project -->
+        </dependency>
+        
+        <!-- Spring Core (for DI, annotations like @Autowired, etc.) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.3.21</version> <!-- Match the version to the above -->
+        </dependency>
+        
+        <!-- Spring Context (for DI, beans, etc.) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.21</version> <!-- Match the version to the above -->
+        </dependency>
+        
+        <!-- If you need to use logging (e.g., log4j) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jcl</artifactId>
+            <version>5.3.21</version> <!-- Match the version to the above -->
+        </dependency>
+
+        <!-- JSTL for JSP tags like <c:forEach> -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <url>http://localhost:8080/manager/text</url>
+                    <server>Tomcat9</server> <!-- This matches the <id> in settings.xml -->
+                    <path>/</path>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+</project>
